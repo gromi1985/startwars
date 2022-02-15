@@ -60,7 +60,10 @@ img{
     height: 100%;
     width:203px;
     max-height: 88px;
-}    
+}  
+span{
+  color:rgb(153, 153, 153);
+}  
 
 
 </style>
