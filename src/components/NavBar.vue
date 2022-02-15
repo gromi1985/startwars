@@ -2,7 +2,7 @@
     <div class="container" id="headCustom">  
       <nav id='menu' class="navbar justify-content-between">
         <p>1</p>
-        <img alt="Star logo" src="../assets/indice.png" @click="goHome">
+        <a href="" @onclick="goHome"><img alt="Star logo" src="../assets/indice.png" ></a>
         <div class="  d-flex flex-row justify-content-end">
           <button type="button" @click="goLogin">LOGIN </button>
           <span>//</span>
