@@ -4,20 +4,64 @@
     <img src="../assets/loginAccount.png" alt="">
   </div>
   <h1>CREATE YOUR ACCOUNT</h1>
-  <form>
-    <input class="d-block" type="text" name="firstName" v-model="firstName" placeholder="First Name">
-    <input class="d-block" type="text" name="lastName" v-model="lastName" placeholder="Last Name">
+  <form novalidate 
+     id="form"
+     method="post"
+     @submit="checkForm">
+    <input  id="firstName"
+            type="text" 
+            name="firstName" 
+            v-model="firstName" 
+            placeholder="First Name" 
+            required>
+    <input id="lastName"
+           type="text" 
+           name="lastName" 
+           v-model="lastName" 
+           placeholder="Last Name" 
+           required>
 
-    <input class="d-block" type="email" name="email" v-model="email" placeholder="Username or Email Address">
-    <input class="d-block" type="text" name="displayName" v-model="displayName" placeholder="Display Name">
-    <input class="d-block" type="password" name="password" autocomplete="on" v-model="pass"  placeholder="Password">
-    <label><input type="checkbox"/> Show password</label>
-    <label><input type="checkbox" v-model="offers" /> Yes! I would like to receive by email special offers and updates about Lucasfilm Ltd. and other products and services from The Walt Disney Family of Companies.</label>
+    <input  id="email"
+            type="email" 
+            name="email" 
+            v-model="email" 
+            placeholder="Username or Email Address" 
+            required>
+
+    <input  id="displayName"
+            type="text" 
+            name="displayName" 
+            v-model="displayName" 
+            placeholder="Display Name">
+           <span class="textDisplayName">New display names need to be approved. Until then, you'll see a temporary display name.</span>
+
+    <input id="password"
+           type="password" 
+           name="password" 
+           autocomplete="on" 
+           v-model="password"  
+           placeholder="Password" 
+           required>
+    <div class="text-check">
+      <label class="checkbox">
+        <input  class="me-1" type="checkbox">Show password 
+      </label>
+    </div>
+
+    <div class="text-check">
+      <label>
+        <input class="me-1" type="checkbox" 
+             v-model="offers"> Yes! I would like to receive by email special offers and updates about Lucasfilm Ltd. and other products and services from The Walt Disney Family of Companies.
+    </label>
+    </div>
    
-    <p>By creating an account, you agree to our Terms of Use and acknowledge that you have read our Privacy Policy, Cookies Policy and EU Privacy Rights. More...</p>
-    <p>My home country/region: Spain. Change.</p>
-    <button class="d-block" @click="guardarLocalStorage">Create Account</button>
-    <p>Already have an account? Sign In</p>
+    <p class="termAccept">By creating an account, you agree to our Terms of Use and acknowledge that you have read our Privacy Policy, Cookies Policy and EU Privacy Rights. More...</p>
+    <p class="termAccept">My home country/region: Spain. Change.</p>
+    <input type="submit" value="Create Account" />
+
+    <p>
+      <a href="" @click="goLogin">Already have an account? Sign In</a>
+    </p>
   </form>
 </div>
 
@@ -32,29 +76,65 @@
         firstName:'',
         lastName:'',
         offers:'',
+        displayName:'',
 
         dataPerson:{
         'firstName':'',
         'lastName':'',
         'email':'',
         'password':'',
-        'offers':''
+        'offers':'',
+        'displayName':'false'
         }
       }
     },
     methods:{
-      guardarLocalStorage(){
+      goLogin(){
+          this.$router.push({ name: 'Login'})
+      },
+      guardarLocalStorage:function(){
+        // event.preventDefault();  
         this.dataPerson.email = this.email;
         this.dataPerson.password = this.password;
         this.dataPerson.firstName = this.firstName;
         this.dataPerson.firstName = this.lastName;
-        this.dataPerson.offers = this.offers
+        this.dataPerson.offers = this.offers;
+        this.dataPerson.displayName = false
+
 
         localStorage.setItem("usuario",JSON.stringify(this.dataPerson));
+      },
+      checkForm: function (e) {
+      this.errors = [];
+
+      if (!this.firstName) {
+        this.errors.push("El First Name es obligatorio.");
       }
+      if (!this.lastName) {
+        this.errors.push("El Last Name es obligatorio.");
+      }
+      if (!this.email) {
+        this.errors.push('El correo electrónico es obligatorio.');
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('El correo electrónico debe ser válido.');
+      }
+
+      if (!this.errors.length) {
+        this.guardarLocalStorage();
+        return true;
+      }
+      alert("Por favor Revise su datos")
+      e.preventDefault();
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     }
-   
+    }
+
+    
   }
+   
 
 </script>
 <style>
@@ -70,20 +150,54 @@
   padding-bottom:40px;
   background-color:#181818;
   min-width:440px;
-  min-height:23rem;
+  min-height:100vh;
   width:410px;
   margin:0 auto;
   font-size:12px;
+  margin-top:40px;
+}
+form>*{
+  margin:0 auto;
 }
 #register img{
 width: 322px;
 height: 60px;
 }
-#register input,
-#register button{
-  width: 350px;
+#register>form>*,
+#register .text-check{
+   width: 350px;
+}
+#register .text-check,
+.termAccept
+{
+  display:block;
+  text-align: left;
+  color: #aaa;
+  padding-left:0px;
+  padding-right: 0px;
+  
+}
+#register label,
+#register input[type="checkbox"]{
+  display:inline-block;
+ 
+}
+/* #register>form>input:not([type="checkbox"]):not([type="radio"]):active{ */
+
+#register>form>input,
+#register>form>button{
   font-size:1.1rem;
+  display:block;
+  border: 1px solid #d8dee8;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+  margin-bottom:1rem;
  }
+ #register>#form>input:active{
+    border: 1px solid red;
+    color: red;
+    padding: 0 15px;
+}
+
  #register button{
    background-color: #484848;
    font-size:1.5em
@@ -92,4 +206,18 @@ height: 60px;
    text-align: right;
    font-size:1.25em;
  }
+ .textDisplayName{
+   color: #abb0b8;
+    display: block;
+    padding-top: 7px;
+    text-align:justify;
+ }
+ #register h1{
+   font-size:1.4rem;
+   margin-bottom:1.3rem;
+   text-transform: uppercase;
+   color: #edd700;
+   text-align:center;
+ }
+ 
 </style>
