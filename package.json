@@ -47,5 +47,17 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "```\r npm install\r ```",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gromi1985/startwars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gromi1985/startwars/issues"
+  },
+  "homepage": "https://github.com/gromi1985/startwars#readme"
 }

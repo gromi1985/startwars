@@ -3,17 +3,20 @@
     <img alt="start Image" src="../assets/img1.webp">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <button type="button" @click="goStarShips">STARSHIPS</button>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    HelloWorld,
+    Footer
   },
   methods:{
     goStarShips(){
