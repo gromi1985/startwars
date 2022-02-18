@@ -15,6 +15,9 @@ Patron para buscar los elementos en la cadena shipPromise
 {([^}]*)
 { "name"([^}]*)
 
+<form novalidate : la propiedad no validate es para desactivar las validaciones propias de html sobre los input
+ action="#": el # es para que no vaya a ningun lado el envio de los datos
+
 
 
 

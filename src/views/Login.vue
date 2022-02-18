@@ -41,12 +41,7 @@
 
 </script>
 <style>
-/* #login div,
-#login h1,
-#login input,
-#login a{
 
-} */
 #login{
   font-family:"DIN Next W01 Light";
   margin-top:100px;

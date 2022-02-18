@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
   },
   {
     path: '/starships',
@@ -13,7 +12,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Starships.vue')
+    component: () => import(/* webpackChunkName: "starships" */ '../views/Starships.vue')
   },
   {
     path: '/video',
@@ -21,13 +20,13 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Video.vue')
+    component: () => import(/* webpackChunkName: "video" */ '../views/Video.vue')
   }
   ,
  {
    path: '/detailship',
    name: 'DetailShip',
-  component: () => import(/* webpackChunkName: "about" */ '../views/DetailShip.vue'),
+  component: () => import(/* webpackChunkName: "detailship" */ '../views/DetailShip.vue'),
   props:true
   },
   {

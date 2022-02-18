@@ -1,8 +1,6 @@
 <template>
     <div class="container">
-    <!-- <div v-for = "(item, index) in getInfoTwo" 
-                      :key="index" > -->
-     
+    
       <div v-for = "(item, index) in getInfoTwo" 
                       :key="index" 
                       class='regItems d-flex flex-column align-items-left ps-4' 
@@ -11,7 +9,6 @@
         <p class="itemSecond py-2">{{item.model}}</p>
       </div>
     </div>
-  <!-- </div> -->
 </template>
 
 
