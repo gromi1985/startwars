@@ -36,7 +36,6 @@
         <p>url:{{ itemShip.url }}</p>
       </div>
     </div>
-    <!-- <button id="viewMore">View More</button> -->
   </div>
 </template>
 

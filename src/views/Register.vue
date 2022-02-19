@@ -1,4 +1,7 @@
 <template>
+<!-- Tipo 1: Texto
+     Tipo 2: Email
+     Tipo 3: Password -->
   <div id="register">
     <div>
       <img src="../assets/loginAccount.png" alt="" />
@@ -8,7 +11,6 @@
       novalidate
       id="form"
       action="#"
-      method="post"
       @submit.prevent="checkForm">
     <div>
      
@@ -18,50 +20,50 @@
                     @newBlur="blurElement"
                     @newFocus="focusElement"
                     :flagEvents='flagEventsObject'
+                    tipo='1'
                     ></InputElement>
 
-    <div id="field-2">
-        <label>
-          <span > Last Name </span>
-          <input @focus="focusElement"
-          id="lastName"
-          type="text"
-          name="lastName"
-          v-model="lastName"
-          placeholder="Last Name"
-          required
-           />
-        </label>
-        <span></span>
-    </div>
-      <input
-        id="email"
-        type="email"
-        name="email"
-        v-model="email"
-        placeholder="Username or Email Address"
-        required
-      />
+      <InputElement idElement="field-2" 
+                    headTitle="Last Name"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='1'
+                    ></InputElement>
 
-      <input
-        id="displayName"
-        type="text"
-        name="displayName"
-        v-model="displayName"
-        placeholder="Display Name"/>
-      <span class="textDisplayName">
+
+      <InputElement idElement="field-3" 
+                    headTitle="Email"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='2'
+                    ></InputElement>
+
+      <InputElement idElement="field-4" 
+                    headTitle="Display Name"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='1'
+                    ></InputElement>
+
+       <span class="textDisplayName">
         New display names need to be approved. Until then, you'll see a
         temporary display name.
       </span>
+      <InputElement idElement="field-5" 
+                    headTitle="Password"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='3'
+                    ></InputElement>
 
-      <input
-        id="password"
-        type="password"
-        name="password"
-        autocomplete="on"
-        v-model="password"
-        placeholder="Password"
-        required/>
       <div class="text-check">
         <label class="checkbox">
           <input class="me-1" type="checkbox" />Show password
@@ -108,8 +110,6 @@ export default {
       flagEventsObject:{'esActivateBlur':false,
                         'esActivateFocus':false,
                         'esActivateOninput':false},
-      // esActivateFocus:false,
-      // esActivateBlur:false,
       contador:10,
       email: "",
       password: "",
@@ -153,46 +153,26 @@ export default {
       this.initEventVariables();
       this.flagEventsObject.esActivateOninput = true;
     },
-    guardarLocalStorage: function () {
-      // event.preventDefault();
-      this.dataPerson.email = this.email;
-      this.dataPerson.password = this.password;
-      this.dataPerson.firstName = this.firstName;
-      this.dataPerson.firstName = this.lastName;
-      this.dataPerson.offers = this.offers;
-      this.dataPerson.displayName = false;
-
-      localStorage.setItem("usuario", JSON.stringify(this.dataPerson));
-    },
+     validateUser(){
+         this.$store.dispatch("PUSH_USER");
+         this.goHome();   
+     },
     
-    checkForm: function (e) {
-      this.errors = [];
+    validateFields(){
+      return true;
+    }
+    // guardarLocalStorage: function () {
+    //   // event.preventDefault();
+    //   this.dataPerson.email = this.email;
+    //   this.dataPerson.password = this.password;
+    //   this.dataPerson.firstName = this.firstName;
+    //   this.dataPerson.firstName = this.lastName;
+    //   this.dataPerson.offers = this.offers;
+    //   this.dataPerson.displayName = false;
 
-      if (!this.firstName || /^\s+$/.test(this.firstName)) {
-        console.log("Hola");
-        this.errors.push("El First Name es obligatorio.");
-      }
-      if (!this.lastName) {
-        this.errors.push("El Last Name es obligatorio.");
-      }
-      if (!this.email) {
-        this.errors.push("El correo electrónico es obligatorio.");
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push("El correo electrónico debe ser válido.");
-      }
-
-      if (!this.errors.length) {
-        this.guardarLocalStorage();
-        return true;
-      }
-      alert("Por favor Revise su datos");
-      e.preventDefault();
-    },
-    validEmail: function (email) {
-      var re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
+    //   localStorage.setItem("usuario", JSON.stringify(this.dataPerson));
+    // },
+    
   },
 };
 </script>
@@ -265,7 +245,7 @@ form > * {
 
 
 /**FIELD-1 */
-#field-1 > label{
+.elementItem > label{
   display: block;
   /* border:2px solid #edd700; */
   box-sizing: border-box;
@@ -275,7 +255,7 @@ form > * {
   border:none
 }
 
-#field-1>label>input{
+.elementItem>label>input{
   display:block;
   background: transparent;
   outline:none;
@@ -286,36 +266,36 @@ form > * {
 
 
 }
-#field-1>label>span{
+.elementItem>label>span{
   position:absolute;
   color:#abb0b8;
   top:5px;
   left:5px ;
 }
-#field-1>label>span,
-#field-1>label>#input{
+.elementItem>label>span,
+.elementItem>label>#input{
   padding:0;
 }
 
-/*FIELD-1 ONFOCUS*/
-/*#field-1>label*/
-#field-1>label>input.focus{
+/*FIELD*/
+.elementItem>label>input.focus{
   background: #abb0b8;
   color:#edd700;
 }
-#field-1>label.focus{
+.elementItem>label.focus{
  color:#abb0b8;
  border-color: #edd700;
 }
 
-#field-1>label>input.blur{
+.elementItem>label>input.blur{
   background: white;
 }
-#field-1>label>.blur{
+.elementItem>label>.blur{
   border-color: red;
 }
 
-.blur{
+.blur,
+.oninput{
   border:none;
   color:red;
   background-color:#181818;
@@ -323,10 +303,10 @@ form > * {
 
 }
 
-#field-1 .blur{
+.elementItem .blur{
   margin-bottom: .4rem !important;
 }
-#field-1>label>span.oninput{
+.elementItem>label>span.oninput{
   color:white;
 }
 

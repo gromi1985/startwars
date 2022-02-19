@@ -6,6 +6,7 @@ export default createStore({
   state: {
     info:[] ,
     page:1,
+    dataPerson:{}
   },
   mutations: {
     LOAD_ITEMSHIP:function(state,payload){
@@ -35,6 +36,30 @@ export default createStore({
         })
       .catch(error=>console.log(error));
     }
+  },
+   PUSH_USER:(state) =>
+   {
+      let user = JSON.stringify(state.state.dataPerson);//objeto json
+      console.log(user);
+      return true;
+
+      //localStorage.setItem ("user", user);
+
+      // this.dataPerson.email = this.email;
+      // this.dataPerson.password = this.password;
+      // this.dataPerson.firstName = this.firstName;
+      // this.dataPerson.firstName = this.lastName;
+      // this.dataPerson.offers = this.offers;
+      // this.dataPerson.displayName = false;
+
+      // localStorage.setItem("usuario", JSON.stringify(this.dataPerson));
+   },
+   GET_USER:(state)=>
+  {
+    let user = JSON.stringify(state.state.dataPerson);//objeto json
+    console.log(user);
+    return true;
+   // localStorage.getItem('usuario'.state.dataPerson.usuario,);
   },
   
   getters: {

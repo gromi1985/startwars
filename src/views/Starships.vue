@@ -30,8 +30,6 @@ export default {
         },
  
     scroll(){
-      this.isLoading = true;
-
       window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
         if (bottomOfWindow ) 

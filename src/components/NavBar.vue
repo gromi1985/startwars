@@ -80,6 +80,6 @@ img{
 .nav-link:hover{
   color:rgb(153, 153, 153);;
 }
-
+/**Estilos de los Input para Login y Register */
 
 </style>
