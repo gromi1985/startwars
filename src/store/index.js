@@ -17,9 +17,7 @@ export default createStore({
       varTemp = state.info.concat(payload);
       state.info = varTemp;
       },
-    ADD_PAGE:(state)=>{(state.page++)
-    console.log('AMERICA3 :' + state.page)
-    },
+    ADD_PAGE:(state)=>{(state.page++)},
     SET_USER:(state,dataUser)=>{state.dataPerson  = Object.assign({} , dataUser);}
 
   },
@@ -38,18 +36,10 @@ export default createStore({
       .catch(error=>console.log(error));
     },
     LOGIN_USER:function(state,dataUser){
-      // state.dataPerson.email=dataUser.email;
-      // state.dataPerson.password=dataUser.password;
-      //state.dataPerson  = Object.assign({} , dataUser);
-      console.log('3');
-      console.log(dataUser);
-      
-      console.log(state.dataPerson)
       let userLocal='';
       if (localStorage.length > 0)
       {
          userLocal = localStorage.getItem('usuario');
-         //console.log('Usuario Local:' + userLocal);
          
          if(userLocal != null){
           if((dataUser.email === JSON.parse(userLocal).email) &&

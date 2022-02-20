@@ -72,8 +72,10 @@ export default {
       if(!this.cadena.length){
           this.esActivateBlur = this.flagEvents.esActivateBlur;
       }
-      else
+      else{
           this.esActivateBlur = false;
+          this.esActivateFocus = true;
+      }
 
       this.esActivateOninput = this.flagEvents.esActivateOninput;
     

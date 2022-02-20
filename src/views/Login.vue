@@ -38,7 +38,7 @@
         <div id="remember-container">
           <span id="remember">Need help signing in?</span>
         </div>
-        <input class="h-element" type="submit" value="Create an account" />
+        <input class="h-element" type="button" value="Create an account" @click="goRegister"/>
       </form>
       <p>AAA</p>
     </div>
@@ -72,16 +72,9 @@ export default {
   },
   methods: {
     ...mapActions(['LOGIN_USER']) ,
-    goHome() {
-      this.$router.push({name:'Home'});
-    
-    },
-    // SETUSER:{
-    //   store.commit('SETUSER',this.userLogin);
-    //  },
+    goHome() {this.$router.push({name:'Home'})},
+    goRegister(){this.$router.push({name:'Register'})},
     checkForm(e) {
-     
-
       let userPassword= document.querySelector('#field-8 input').value;
       let userMail= document.querySelector('#field-7 input').value;
        e.preventDefault();
@@ -97,24 +90,7 @@ export default {
       }
       //Enviando varios parametros no me funcionó tuve que pasar un objeto.
       //this.$store.commit( 'SETUSER',userMail,userPassword);
-      
-
-
-     // this.getExisteUserTwo();
-
       },
-      
-
-    // if (this.$store.state.commit("SETUSER",this.userLogin)){
-        
-    //      // this.goHome();
-    //     console.log('Usuario es valido');
-    //   }
-    //   else{
-    //      console.log('Usuario no es valido');
-    //      this.esActivateError=true;
-    //   }
-    //},
     initEventVariables() {
       this.flagEventsObject.esActivateBlur = false;
       this.flagEventsObject.esActivateFocus = false;
@@ -132,14 +108,6 @@ export default {
       this.initEventVariables();
       this.flagEventsObject.esActivateOninput = true;
     },
-
-    // recuperarLocalStorage:function(event){
-    //   event.preventDefault();
-    //   console.log('recuperarLocalStorage()')
-    //   this.usuario = localStorage.getItem('usuario');
-    //   if(this.usuario){
-    //      if(this.email === JSON.parse(this.usuario).email)
-    //        console.log('Se ha conectado con exito:'  + this.email)
   },
   computed: {
       ...mapGetters (['getUser']),
