@@ -11,7 +11,7 @@
       novalidate
       id="form"
       action="#"
-      @submit.prevent="checkForm">
+      @submit="checkForm">
     <div>
      
       <InputElement idElement="field-1" 
@@ -87,7 +87,7 @@
         Rights. More...
       </p>
       <p class="termAccept">My home country/region: Spain. input.</p>
-      <input type="submit" value="Create Account" />
+      <input class="h-element" type="submit" value="Create Account" />
 
       <p>
         <a href="" @click="goLogin">Already have an account? Sign In</a>
@@ -99,6 +99,8 @@
 
 <script>
 import InputElement from '@/components/InputElement.vue'
+import {mapGetters,mapActions} from  'vuex'
+
 
 export default {
   name: 'Register',
@@ -118,19 +120,24 @@ export default {
       offers: "",
       displayName: "",
 
-      dataPerson: {
+      userRegister: {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
         offers: "",
-        displayName: "false",
+        displayName: "false"
       },
+      flagError:false
     };
   },
   methods: {
+     ...mapActions(['REGISTERUSER']) ,
     goLogin() {
       this.$router.push({ name: "Login" });
+    },
+    goHome(){
+      this.$router.push({name:'Home'});
     },
     initEventVariables(){
      console.log('initEventVariables');
@@ -158,8 +165,43 @@ export default {
          this.goHome();   
      },
     
-    validateFields(){
-      return true;
+    checkForm(e){
+      //flagError: true si hubo error en el ingreso de algun dato del formulario
+      console.log('checkForm');
+       e.preventDefault();
+       this.userRegister.email = document.querySelector('#field-1 input').value;
+       this.userRegister.password = document.querySelector('#field-2 input').value;
+       this.userRegister.firstName = document.querySelector('#field-3 input').value;
+       this.userRegister.lastName = document.querySelector('#field-4 input').value;
+       this.userRegister.offers = document.querySelector('#field-5 input').value;
+       this.userRegister.displayName = false;
+
+        if(this.userRegister.email &&
+           this.userRegister.password &&
+           this.userRegister.firstName &&
+           this.userRegister.lastName &&
+           this.userRegister.offers )
+           this.flagError = false;
+        else
+           this.flagError = true;
+
+     console.log('1');
+     if(!this.flagError)
+      {
+             console.log('2');
+
+        //Verifica que usuario no exista en localstorage
+        //  this.$store.commit( 'SETUSER',this.userRegister);
+       //  this.VERIFUSER(this.userRegister);
+          console.log(this.$store.state.flagUser);
+          //if(this.$store.state.flagUser){
+              //Enviando un objeto Funciona
+             // this.$store.commit( 'REGISTERUSER',this.userRegister);
+              this.REGISTERUSER(this.userRegister);
+              this.goLogin();
+        //  }
+      }
+
     }
     // guardarLocalStorage: function () {
     //   // event.preventDefault();
@@ -174,6 +216,9 @@ export default {
     // },
     
   },
+  computed:{
+    ...mapGetters(['getUserExiste'])
+  }
 };
 </script>
 <style>
@@ -189,7 +234,6 @@ export default {
   width: 410px;
   margin: 0 auto;
   font-size: 12px;
-  margin-top: 40px;
 }
 #register * {
   letter-spacing: .06em;
@@ -217,7 +261,8 @@ form > * {
   padding-left: 0px;
   padding-right: 0px;
 }
-/*#register label,*/
+
+
 #register input[type="checkbox"] {
   display: inline-block;
 }
@@ -245,6 +290,11 @@ form > * {
 
 
 /**FIELD-1 */
+#register .elementItem input,
+#register input.h-element
+{
+  height: 40px;
+}
 .elementItem > label{
   display: block;
   /* border:2px solid #edd700; */
@@ -277,7 +327,7 @@ form > * {
   padding:0;
 }
 
-/*FIELD*/
+/*Evento Focus*/
 .elementItem>label>input.focus{
   background: #abb0b8;
   color:#edd700;
@@ -287,6 +337,7 @@ form > * {
  border-color: #edd700;
 }
 
+/**Evento BLUR */
 .elementItem>label>input.blur{
   background: white;
 }
@@ -294,8 +345,7 @@ form > * {
   border-color: red;
 }
 
-.blur,
-.oninput{
+.blur{
   border:none;
   color:red;
   background-color:#181818;
@@ -306,8 +356,14 @@ form > * {
 .elementItem .blur{
   margin-bottom: .4rem !important;
 }
-.elementItem>label>span.oninput{
-  color:white;
+
+/**Evento ONINPUT */
+.elementItem>span.oninput{
+  display:none
 }
 
+.elementItem>label>input.oninput{
+  color:#edd700;
+  background-color:#abb0b8; 
+}
 </style>

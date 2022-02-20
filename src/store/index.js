@@ -6,9 +6,11 @@ export default createStore({
   state: {
     info:[] ,
     page:1,
-    dataPerson:{}
+    dataPerson:{},
+    flagUser:false
   },
   mutations: {
+    //flagUser: true si el usuario existe en el localstorage
     LOAD_ITEMSHIP:function(state,payload){
       let varTemp = [];
       varTemp = payload;
@@ -16,10 +18,12 @@ export default createStore({
       state.info = varTemp;
       },
     ADD_PAGE:(state)=>{(state.page++)
-    console.log('AMERICA3 :' + state.page)}
+    console.log('AMERICA3 :' + state.page)
+    },
+    SET_USER:(state,dataUser)=>{state.dataPerson  = Object.assign({} , dataUser);}
+
   },
   actions: {
-    //metodos
     GET_ITEMSHIP: (state) =>
     {
       axios
@@ -30,40 +34,78 @@ export default createStore({
             state.commit("LOAD_ITEMSHIP",shipListInfo);
             state.commit("ADD_PAGE",state.state.page);
         }
-        
-       
-        //console.log('AMERICA :' + state.state.page);
-        })
+       })
       .catch(error=>console.log(error));
+    },
+    LOGIN_USER:function(state,dataUser){
+      // state.dataPerson.email=dataUser.email;
+      // state.dataPerson.password=dataUser.password;
+      //state.dataPerson  = Object.assign({} , dataUser);
+      console.log('3');
+      console.log(dataUser);
+      
+      console.log(state.dataPerson)
+      let userLocal='';
+      if (localStorage.length > 0)
+      {
+         userLocal = localStorage.getItem('usuario');
+         //console.log('Usuario Local:' + userLocal);
+         
+         if(userLocal != null){
+          if((dataUser.email === JSON.parse(userLocal).email) &&
+            (dataUser.password === JSON.parse(userLocal).password)){
+              localStorage.setItem("usuario", JSON.stringify(dataUser));
+              state.commit("SET_USER",dataUser);
+              state.flagUser = true;
+              console.log('El usuario es correcto');
+            }
+         }
+         else{  
+          console.log('El usuario no registrado');
+          state.flagUser = false;
+         }
+
+       }
+       else {
+         console.log("Usuario no registrado");
+         this.flagUser = false;
+       }
+    },
+    REGISTERUSER:function(state,dataUser){
+      console.log('REGISTERUSER');
+      let userLocal='';
+      if (localStorage.length > 0)
+      {
+         userLocal = localStorage.getItem('usuario');
+         if(userLocal != null){
+            if((dataUser.email === JSON.parse(userLocal).email) &&
+              (dataUser.password === JSON.parse(userLocal).password)){
+                dataUser={};
+                console.log('Usuario ya registrado');
+                state.commit("SET_USER",dataUser);
+              }
+              else{
+                console.log(dataUser);
+                localStorage.setItem("usuario", JSON.stringify(dataUser));
+                state.commit("SET_USER",dataUser);
+              }
+            }
+          else{
+              localStorage.setItem("usuario", JSON.stringify(dataUser));
+              state.commit("SET_USER",dataUser);
+          }
+      }
     }
+
   },
-   PUSH_USER:(state) =>
-   {
-      let user = JSON.stringify(state.state.dataPerson);//objeto json
-      console.log(user);
-      return true;
-
-      //localStorage.setItem ("user", user);
-
-      // this.dataPerson.email = this.email;
-      // this.dataPerson.password = this.password;
-      // this.dataPerson.firstName = this.firstName;
-      // this.dataPerson.firstName = this.lastName;
-      // this.dataPerson.offers = this.offers;
-      // this.dataPerson.displayName = false;
-
-      // localStorage.setItem("usuario", JSON.stringify(this.dataPerson));
-   },
-   GET_USER:(state)=>
-  {
-    let user = JSON.stringify(state.state.dataPerson);//objeto json
-    console.log(user);
-    return true;
-   // localStorage.getItem('usuario'.state.dataPerson.usuario,);
-  },
-  
+ 
   getters: {
     getInfo:(state)=>{
-      return state.info}
+      return state.info;
+    },
+    getUserExiste:(state)=>{
+       return state.flagUser;
+    }
+   
   }
 })

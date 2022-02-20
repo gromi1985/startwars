@@ -1,8 +1,7 @@
 <template>
   <div :id="idElement" class="elementItem">
     <label>
-      <span v-show="(!(esActivateFocus || esActivateOninput) && esActivateBlur) ||
-                      (!esActivateFocus && !esActivateOninput ) "> {{headTitle}} </span>
+      <span v-show="!(esActivateFocus || esActivateOninput) && esActivateBlur "> {{headTitle}} </span>
       <input
         :type='definitionTypeField()'
         @blur='blurEmit'
@@ -54,6 +53,8 @@ export default {
     },
     blurEmit:function(){
       this.$emit('newBlur');
+      console.log("Entra Flags");
+      console.log(this.flagEvents);
       this.treatmentFlags();
     },
     focusEmit:function(){
@@ -76,6 +77,10 @@ export default {
           this.esActivateBlur = false;
 
       this.esActivateOninput = this.flagEvents.esActivateOninput;
+            console.log('esActivateFocus:' + this.esActivateFocus);
+            console.log('esActivateBlur:'+ this.esActivateBlur);
+
+            console.log('esActivateOninput:' + this.esActivateOninput);
     
     },
     emailValidatePattern()
@@ -88,9 +93,11 @@ export default {
          return respuesta;
     },
     validateFields(){
+      console.log('validateFields:'+ this.tipo, typeof this.tipo);
       switch (this.tipo){
         case '2':
           if(!this.emailValidatePattern())
+            console.log('yeeeee');
              this.msgBlur="Please enter a valid email address."
           break;
         default: 

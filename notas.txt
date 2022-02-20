@@ -19,5 +19,11 @@ Patron para buscar los elementos en la cadena shipPromise
  action="#": el # es para que no vaya a ningun lado el envio de los datos
 
 
+Tal como teneia montado los estilos de register no se aplicaban a los input de Login , ya que no son padre e hijo sino hermanos.
+
+Por lo que he cambiado los estilos al padre en comun que es el navbar.
 
 
+Cambio de ruta dentro de codigo, por path o por nombre
+   this.$router.push({path: '/'});
+      this.$router.push({name:'Home'});
