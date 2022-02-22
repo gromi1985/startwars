@@ -9,7 +9,8 @@
       <router-link to="/video">VIDEO</router-link> 
     </div>
     <div class="border-x">
-      <router-link to="/starships">STARSHIPS</router-link>
+      <router-link v-if='flagUser'  to="/starships">STARSHIPS</router-link>
+       <router-link v-else to="/Login" >STARSHIPS</router-link>
     </div>
   </div>
   
@@ -24,6 +25,7 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar.vue";
+import { mapState} from  'vuex'
 
 
 
@@ -31,6 +33,9 @@ export default {
   name: "App",
   components: {
     NavBar
+  },
+  computed: {
+    ...mapState(['flagUser']),
   },
   // data(){
   //   return{
