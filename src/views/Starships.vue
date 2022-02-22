@@ -15,19 +15,9 @@
 <script>
  import {mapActions,mapState} from  'vuex'
 export default {
-
-  //   data () {
-  //       return {
-    
-  //   }
-  // },
- 
   
   computed: {
       ...mapState(['info']),
-    //   ...mapGetters ({
-    //      infoShips:'getInfo'
-    // })
     },
   methods: {
     ...mapActions(['GET_ITEMSHIP']),
@@ -37,20 +27,12 @@ export default {
  
     scroll(){
       window.onscroll = () => {
-        console.log('llamada');
-        console.log(document.documentElement.scrollTop);
-        console.log(window.innerHeight);
-        console.log(document.documentElement.offsetHeight);
         let sumaSizes = Math.round(document.documentElement.scrollTop + window.innerHeight);
         let limitDown = document.documentElement.offsetHeight - 1;
         let limitUp = document.documentElement.offsetHeight + 1;
-       // let minsumaSizes = sumaSizes - 1;
-        // let maxsumaSizes = sumaSizes + 1;
-        // let bottomOfWindow = (document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
         let bottomOfWindow = sumaSizes > limitDown && sumaSizes < limitUp
         console.log(bottomOfWindow);
         if (bottomOfWindow ) {
-          console.log("Tomates");
           this.$store.dispatch("GET_ITEMSHIP");
         }
        

@@ -166,7 +166,6 @@ export default {
      },
     
     checkForm(e){
-      //flagError: true si hubo error en el ingreso de algun dato del formulario
       console.log('checkForm');
        e.preventDefault();
        this.userRegister.email = document.querySelector('#field-1 input').value;
@@ -185,7 +184,6 @@ export default {
         else
            this.flagError = true;
 
-     console.log('1');
      if(!this.flagError)
       {
           this.REGISTERUSER(this.userRegister);
@@ -195,9 +193,6 @@ export default {
     }
     
   },
-  // computed:{
-  //   ...mapGetters(['getUserExiste'])
-  // }
 };
 </script>
 <style>
@@ -248,7 +243,6 @@ form > * {
 #register input:not([type="checkbox"]){
   margin-bottom:1rem;
 }
-/* #register>form>input:not([type="checkbox"]):not([type="radio"]):active{ */
 
 
 .textDisplayName {

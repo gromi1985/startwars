@@ -43,6 +43,9 @@ export default createStore({
         console.log('1. state.nCountPilots:')
          console.log('A. :' + state.nCountPilots);
       },
+      SET_FLAG_USER:function(state,newValue){
+        state.flagUser = newValue;
+      },
     
     // SET_ITEM_SHIP_MODEL(state, itemShipModel) {
     //   state.itemShipModel = itemShipModel;
@@ -87,30 +90,37 @@ export default createStore({
    
     
     LOGIN_USER:function(state,dataUser){
+      console.log("LOGIN_USER....");
       let userLocal='';
       if (localStorage.length > 0)
       {
          userLocal = localStorage.getItem('usuario');
          
          if(userLocal != null){
+           console.log("Hay localstorage....")
           if((dataUser.email === JSON.parse(userLocal).email) &&
             (dataUser.password === JSON.parse(userLocal).password)){
               localStorage.setItem("usuario", JSON.stringify(dataUser));
               state.commit("SET_USER",dataUser);
-              state.state.flagUser = true;
+              state.commit("SET_FLAG_USER",true);
+              //state.state.flagUser = true;
               console.log('El usuario es correcto');
+            }
+            else {
+              console.log("Usuario no registrado...");
+              state.commit("SET_FLAG_USER",false);
+             // state.state.flagUser = false;
             }
          }
          else{  
-          console.log('El usuario no registrado');
-          state.state.flagUser = false;
+          console.log('El usuario no registrado..');
+          state.commit("SET_FLAG_USER",false);
+
+          // state.state.flagUser = false;
          }
 
        }
-       else {
-         console.log("Usuario no registrado");
-         state.state.flagUser = false;
-       }
+      
     },
     REGISTERUSER:function(state,dataUser){
       console.log('REGISTERUSER');

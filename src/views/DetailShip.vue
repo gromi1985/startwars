@@ -83,10 +83,17 @@ export default {
       if(!this.model){
         console.log('El model es vacio');
         this.goHome();
+   //     console.log(this.$store.state.itemShipModel);
+
      }
+    //  else{
+    //    console.log("Guardamos el modelo");
+    //    this.$store.commit("SET_ITEM_SHIP_MODEL",this.model)
+    //  }
 
      // console.log(this.$store.state.itemShipModel)
       this.itemShip = this.$store.state.info.find((e) => {
+         
          return e.model === this.model;
       });
 

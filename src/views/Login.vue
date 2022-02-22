@@ -29,14 +29,13 @@
           :flagEvents="flagEventsObject"
           tipo="1"
         ></InputElement>
-        <!-- <span vshow="mostrar" class="msgError">Error: Usuario o Password Incorrecto <span> -->
 
         <input class="h-element" type="submit" value="Sign In" />
-        <span :class="[{errorLogin:esActivateError},'text-start']" 
-               v-if="esActivateError">{{msgError}}</span>
+        <span class="errorLogin text-start" 
+               v-if="!flagUser && esActivateError">{{msgError}}</span>
 
         <div id="remember-container">
-          <span id="remember">Need help signing in?</span>
+          <span id="remember"> Need help signing in?</span>
         </div>
         <input class="h-element" type="button" value="Create an account" @click="goRegister"/>
       </form>
@@ -46,7 +45,7 @@
 </template>
 <script>
 import InputElement from "@/components/InputElement.vue";
-import {mapGetters, mapActions} from  'vuex'
+import { mapActions,mapState} from  'vuex'
 
 export default {
   name: "Login",
@@ -70,6 +69,10 @@ export default {
       },
     };
   },
+  computed:{
+    ...mapState(['flagUser']),
+  },
+
   methods: {
     ...mapActions(['LOGIN_USER']) ,
     goHome() {this.$router.push({name:'Home'})},
@@ -82,14 +85,9 @@ export default {
        this.userLogin.password = userPassword;
       if(userPassword && userMail)
       {
-      //Enviando un objeto Funciona
-         // this.$store.commit( 'SETUSER',this.userLogin);
-         // this.$store.dispatch("VERIFUSER",);
           this.LOGIN_USER(this.userLogin);
-          this.esActivateError = this.userLogin.existeUser;
+          this.esActivateError = true;
       }
-      //Enviando varios parametros no me funcionó tuve que pasar un objeto.
-      //this.$store.commit( 'SETUSER',userMail,userPassword);
       },
     initEventVariables() {
       this.flagEventsObject.esActivateBlur = false;
@@ -109,12 +107,12 @@ export default {
       this.flagEventsObject.esActivateOninput = true;
     },
   },
-  computed: {
-      ...mapGetters (['getUser']),
-          getUserTwo(){
-            return this.$store.getters.getUser;
-         }
-    },
+  // computed: {
+  //     ...mapGetters (['getUser']),
+  //         getUserTwo(){
+  //           return this.$store.getters.getUser;
+  //        }
+  //   },
 };
 </script>
 <style>
@@ -157,16 +155,7 @@ form > * {
   height: 40px;
 }
 
-/*#login input,
-#login button {
-  display: block;
-  width: 350px;
-  font-size: 1.1rem;
-}
-#login button {
-  background-color: #484848;
-  font-size: 1.5em;
-}*/
+
 #remember-container {
   text-align: right;
   font-size: 1.25em;
@@ -243,5 +232,8 @@ form > * {
 }
 .elementItem > label > span.oninput {
   color: white;
+}
+span#remember{
+ color: #edd700;
 }
 </style>
