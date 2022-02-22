@@ -1,9 +1,7 @@
 <template>
-    <div class="container">
-    <!-- <div v-for = "(item, index) in getInfoTwo" 
-                      :key="index" > -->
-     
-      <div v-for = "(item, index) in getInfoTwo" 
+    <div class="container mb-5">
+    
+      <div v-for = "(item, index) in info" 
                       :key="index" 
                       class='regItems d-flex flex-column align-items-left ps-4' 
                       @click="Detailship(item.model)">
@@ -11,54 +9,49 @@
         <p class="itemSecond py-2">{{item.model}}</p>
       </div>
     </div>
-  <!-- </div> -->
 </template>
 
 
 <script>
-import {mapGetters} from  'vuex'
+ import {mapActions,mapState} from  'vuex'
 export default {
-
-    data () {
-        return {
-        info: null,
-        page:'1',
-        isLoading : false,
-    }
-  },
- 
+  
+  computed: {
+      ...mapState(['info']),
+    },
   methods: {
-     Detailship(model){  
-            this.$router.push({ name: 'DetailShip', params:{model:model}});                                                 
-        },
+    ...mapActions(['GET_ITEMSHIP']),
+    Detailship(model){  
+      this.$router.push({ name: 'DetailShip', params:{model:model}});                                                 
+      },
  
     scroll(){
-      this.isLoading = true;
-
       window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow ) 
+        let sumaSizes = Math.round(document.documentElement.scrollTop + window.innerHeight);
+        let limitDown = document.documentElement.offsetHeight - 1;
+        let limitUp = document.documentElement.offsetHeight + 1;
+        let bottomOfWindow = sumaSizes > limitDown && sumaSizes < limitUp
+        console.log(bottomOfWindow);
+        if (bottomOfWindow ) {
           this.$store.dispatch("GET_ITEMSHIP");
+        }
+       
       };
       }
-    },
-    computed: {
-      ...mapGetters (['getInfo']),
-      getInfoTwo(){
-        return this.$store.getters.getInfo;
-      }
-    },
-    
- 
-    // beforeMount() {
-    //   this.$store.dispatch("GET_ITEMSHIP");
-    // },
-    mounted() {
-      this.$store.dispatch("GET_ITEMSHIP");
-      window.addEventListener('scroll',this.scroll()); 
-    }
+  },
 
-  
+ 
+    /* beforeMount() {
+       this.$store.dispatch("GET_ITEMSHIP");
+       window.addEventListener('scroll',this.scroll()); 
+
+     },*/
+   mounted() {
+      this.$store.dispatch("GET_ITEMSHIP");
+      this.scroll();
+    },
+
+    
   
   } 
 

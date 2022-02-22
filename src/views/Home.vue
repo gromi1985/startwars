@@ -1,5 +1,6 @@
 <template>
-  <div class="aa">
+  <div class="principalPage">
+    <p>ALL OF YOUR STAR WARS FAVORITES NOW STREAMING ON DISNEY+</p>
     <img alt="start Image" src="../assets/img1.webp">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <button type="button" @click="goStarShips">STARSHIPS</button>
@@ -29,5 +30,10 @@ export default {
 <style>
 div>img{
   width: 100%;
+}
+p{
+  color:white;
+  font-size:.8rem;
+  padding:.8rem;
 }
 </style>

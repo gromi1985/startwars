@@ -1,223 +1,342 @@
 <template>
-<div id="register">
-  <div >
-    <img src="../assets/loginAccount.png" alt="">
+<!-- Tipo 1: Texto
+     Tipo 2: Email
+     Tipo 3: Password -->
+  <div id="register">
+    <div>
+      <img src="../assets/loginAccount.png" alt="" />
+    </div>
+    <h1>CREATE YOUR ACCOUNT</h1>
+    <form
+      novalidate
+      id="form"
+      action="#"
+      @submit="checkForm">
+    <div>
+     
+      <InputElement idElement="field-1" 
+                    headTitle="First Name"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='1'
+                    ></InputElement>
+
+      <InputElement idElement="field-2" 
+                    headTitle="Last Name"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='1'
+                    ></InputElement>
+
+
+      <InputElement idElement="field-3" 
+                    headTitle="Email"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='2'
+                    ></InputElement>
+
+      <InputElement idElement="field-4" 
+                    headTitle="Display Name"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='1'
+                    ></InputElement>
+
+       <span class="textDisplayName">
+        New display names need to be approved. Until then, you'll see a
+        temporary display name.
+      </span>
+      <InputElement idElement="field-5" 
+                    headTitle="Password"
+                    @newOninput="oninputElement"
+                    @newBlur="blurElement"
+                    @newFocus="focusElement"
+                    :flagEvents='flagEventsObject'
+                    tipo='3'
+                    ></InputElement>
+
+      <div class="text-check">
+        <label class="checkbox">
+          <input class="me-1" type="checkbox" />Show password
+        </label>
+      </div>
+     </div>
+
+
+      <div class="text-check">
+        <label>
+          <input class="me-1" type="checkbox" v-model="offers" /> Yes! I would
+          like to receive by email special offers and updates about Lucasfilm
+          Ltd. and other products and services from The Walt Disney Family of
+          Companies.
+        </label>
+      </div>
+
+      <p class="termAccept">
+        By creating an account, you agree to our Terms of Use and acknowledge
+        that you have read our Privacy Policy, Cookies Policy and EU Privacy
+        Rights. More...
+      </p>
+      <p class="termAccept">My home country/region: Spain. input.</p>
+      <input class="h-element" type="submit" value="Create Account" />
+
+      <p>
+        <a href="" @click="goLogin">Already have an account? Sign In</a>
+      </p>
+    </form>
   </div>
-  <h1>CREATE YOUR ACCOUNT</h1>
-  <form novalidate 
-     id="form"
-     method="post"
-     @submit="checkForm">
-    <input  id="firstName"
-            type="text" 
-            name="firstName" 
-            v-model="firstName" 
-            placeholder="First Name" 
-            required>
-    <input id="lastName"
-           type="text" 
-           name="lastName" 
-           v-model="lastName" 
-           placeholder="Last Name" 
-           required>
-
-    <input  id="email"
-            type="email" 
-            name="email" 
-            v-model="email" 
-            placeholder="Username or Email Address" 
-            required>
-
-    <input  id="displayName"
-            type="text" 
-            name="displayName" 
-            v-model="displayName" 
-            placeholder="Display Name">
-           <span class="textDisplayName">New display names need to be approved. Until then, you'll see a temporary display name.</span>
-
-    <input id="password"
-           type="password" 
-           name="password" 
-           autocomplete="on" 
-           v-model="password"  
-           placeholder="Password" 
-           required>
-    <div class="text-check">
-      <label class="checkbox">
-        <input  class="me-1" type="checkbox">Show password 
-      </label>
-    </div>
-
-    <div class="text-check">
-      <label>
-        <input class="me-1" type="checkbox" 
-             v-model="offers"> Yes! I would like to receive by email special offers and updates about Lucasfilm Ltd. and other products and services from The Walt Disney Family of Companies.
-    </label>
-    </div>
-   
-    <p class="termAccept">By creating an account, you agree to our Terms of Use and acknowledge that you have read our Privacy Policy, Cookies Policy and EU Privacy Rights. More...</p>
-    <p class="termAccept">My home country/region: Spain. Change.</p>
-    <input type="submit" value="Create Account" />
-
-    <p>
-      <a href="" @click="goLogin">Already have an account? Sign In</a>
-    </p>
-  </form>
-</div>
-
 </template>
+
+
 <script>
-  export default{
-    name: "Register",
-    data(){
-      return{
-        email:'',
-        password:'',
-        firstName:'',
-        lastName:'',
-        offers:'',
-        displayName:'',
+import InputElement from '@/components/InputElement.vue'
+import {mapActions} from  'vuex'
 
-        dataPerson:{
-        'firstName':'',
-        'lastName':'',
-        'email':'',
-        'password':'',
-        'offers':'',
-        'displayName':'false'
-        }
-      }
-    },
-    methods:{
-      goLogin(){
-          this.$router.push({ name: 'Login'})
+
+export default {
+  name: 'Register',
+  components:{
+    InputElement
+  },
+  data() {
+    return {
+      flagEventsObject:{'esActivateBlur':false,
+                        'esActivateFocus':false,
+                        'esActivateOninput':false},
+      contador:10,
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      offers: "",
+      displayName: "",
+
+      userRegister: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        offers: "",
+        displayName: "false"
       },
-      guardarLocalStorage:function(){
-        // event.preventDefault();  
-        this.dataPerson.email = this.email;
-        this.dataPerson.password = this.password;
-        this.dataPerson.firstName = this.firstName;
-        this.dataPerson.firstName = this.lastName;
-        this.dataPerson.offers = this.offers;
-        this.dataPerson.displayName = false
-
-
-        localStorage.setItem("usuario",JSON.stringify(this.dataPerson));
-      },
-      checkForm: function (e) {
-      this.errors = [];
-
-      if (!this.firstName) {
-        this.errors.push("El First Name es obligatorio.");
-      }
-      if (!this.lastName) {
-        this.errors.push("El Last Name es obligatorio.");
-      }
-      if (!this.email) {
-        this.errors.push('El correo electrónico es obligatorio.');
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push('El correo electrónico debe ser válido.');
-      }
-
-      if (!this.errors.length) {
-        this.guardarLocalStorage();
-        return true;
-      }
-      alert("Por favor Revise su datos")
-      e.preventDefault();
+      flagError:false
+    };
+  },
+  methods: {
+     ...mapActions(['REGISTERUSER']) ,
+    goLogin() {
+      this.$router.push({ name: "Login" });
     },
-    validEmail: function (email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    }
-    }
-
+    goHome(){
+      this.$router.push({name:'Home'});
+    },
+    initEventVariables(){
+     console.log('initEventVariables');
+     this.flagEventsObject.esActivateBlur = false;
+     this.flagEventsObject.esActivateFocus= false;
+     this.flagEventsObject.esActivateOninput= false;
+    },
+    blurElement() {
+      console.log('blur');  
+      this.initEventVariables();
+      this.flagEventsObject.esActivateBlur = true;
+    },
+    focusElement(){
+      console.log('focus');
+      this.initEventVariables();
+      this.flagEventsObject.esActivateFocus = true;
+    },
+    oninputElement(){
+      console.log('oninputElement');
+      this.initEventVariables();
+      this.flagEventsObject.esActivateOninput = true;
+    },
+     validateUser(){
+         this.$store.dispatch("PUSH_USER");
+         this.goHome();   
+     },
     
-  }
-   
+    checkForm(e){
+      console.log('checkForm');
+       e.preventDefault();
+       this.userRegister.email = document.querySelector('#field-1 input').value;
+       this.userRegister.password = document.querySelector('#field-2 input').value;
+       this.userRegister.firstName = document.querySelector('#field-3 input').value;
+       this.userRegister.lastName = document.querySelector('#field-4 input').value;
+       this.userRegister.offers = document.querySelector('#field-5 input').value;
+       this.userRegister.displayName = false;
 
+        if(this.userRegister.email &&
+           this.userRegister.password &&
+           this.userRegister.firstName &&
+           this.userRegister.lastName &&
+           this.userRegister.offers )
+           this.flagError = false;
+        else
+           this.flagError = true;
+
+     if(!this.flagError)
+      {
+          this.REGISTERUSER(this.userRegister);
+          this.goLogin();
+      }
+
+    }
+    
+  },
+};
 </script>
 <style>
-/* #login div,
-#login h1,
-#login input,
-#login a{
 
-} */
-#register{
-  font-family:"DIN Next W01 Light";
-  margin-top:100px;
-  padding-bottom:40px;
-  background-color:#181818;
-  min-width:440px;
-  min-height:100vh;
-  width:410px;
-  margin:0 auto;
-  font-size:12px;
-  margin-top:40px;
+#register {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 200;
+  margin-top: 100px;
+  padding-bottom: 40px;
+  background-color: #181818;
+  min-width: 440px;
+  min-height: 100vh;
+  width: 410px;
+  margin: 0 auto;
+  font-size: 12px;
 }
-form>*{
-  margin:0 auto;
+#register * {
+  letter-spacing: .06em;
 }
-#register img{
-width: 322px;
-height: 60px;
+
+form > * {
+  margin: 0 auto;
 }
-#register>form>*,
-#register .text-check{
-   width: 350px;
+
+#register img {
+  width: 322px;
+  height: 60px;
 }
+
+#register > form > *,
+#register .text-check {
+  width: 350px;
+}
+
 #register .text-check,
-.termAccept
-{
-  display:block;
+.termAccept {
+  display: block;
   text-align: left;
   color: #aaa;
-  padding-left:0px;
+  padding-left: 0px;
   padding-right: 0px;
-  
 }
-#register label,
-#register input[type="checkbox"]{
-  display:inline-block;
- 
-}
-/* #register>form>input:not([type="checkbox"]):not([type="radio"]):active{ */
 
-#register>form>input,
-#register>form>button{
-  font-size:1.1rem;
-  display:block;
-  border: 1px solid #d8dee8;
-  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+
+#register input[type="checkbox"] {
+  display: inline-block;
+}
+#register input:not([type="checkbox"]){
   margin-bottom:1rem;
- }
- #register>#form>input:active{
-    border: 1px solid red;
-    color: red;
-    padding: 0 15px;
 }
 
- #register button{
-   background-color: #484848;
-   font-size:1.5em
- }
- #remember-container{
-   text-align: right;
-   font-size:1.25em;
- }
- .textDisplayName{
-   color: #abb0b8;
-    display: block;
-    padding-top: 7px;
-    text-align:justify;
- }
- #register h1{
-   font-size:1.4rem;
-   margin-bottom:1.3rem;
-   text-transform: uppercase;
-   color: #edd700;
-   text-align:center;
- }
- 
+
+.textDisplayName {
+  color: #abb0b8;
+  display: block;
+  padding-top: 7px;
+  text-align: justify;
+}
+#register h1 {
+  font-size: 1.4rem;
+  margin-bottom: 1.3rem;
+  text-transform: uppercase;
+  color: #edd700;
+  text-align: center;
+}
+
+
+
+
+/**FIELD-1 */
+#register .elementItem input,
+#register input.h-element
+{
+  height: 40px;
+}
+.elementItem > label{
+  display: block;
+  /* border:2px solid #edd700; */
+  box-sizing: border-box;
+  position:relative;
+  background: white;
+  width: 100%;
+  border:none
+}
+
+.elementItem>label>input{
+  display:block;
+  background: transparent;
+  outline:none;
+  width: 100%;
+  padding:5px 5px;
+  /* border:none; */
+    border:2px solid #edd700;
+
+
+}
+.elementItem>label>span{
+  position:absolute;
+  color:#abb0b8;
+  top:5px;
+  left:5px ;
+}
+.elementItem>label>span,
+.elementItem>label>#input{
+  padding:0;
+}
+
+/*Evento Focus*/
+.elementItem>label>input.focus{
+  background: #abb0b8;
+  color:#edd700;
+}
+.elementItem>label.focus{
+ color:#abb0b8;
+ border-color: #edd700;
+}
+
+/**Evento BLUR */
+.elementItem>label>input.blur{
+  background: white;
+}
+.elementItem>label>.blur{
+  border-color: red;
+}
+
+.blur{
+  border:none;
+  color:red;
+  background-color:#181818;
+  display:block;
+
+}
+
+.elementItem .blur{
+  margin-bottom: .4rem !important;
+}
+
+/**Evento ONINPUT */
+.elementItem>span.oninput{
+  display:none
+}
+
+.elementItem>label>input.oninput{
+  color:#edd700;
+  background-color:#abb0b8; 
+}
 </style>

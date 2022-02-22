@@ -12,7 +12,7 @@
       <router-link to="/starships">STARSHIPS</router-link>
     </div>
   </div>
-  <!-- <p>ALL OF YOUR STAR WARS FAVORITES NOW STREAMING ON DISNEY+</p> -->
+  
   <div class="container-fluid">
     <router-view />
   </div>
@@ -32,11 +32,11 @@ export default {
   components: {
     NavBar
   },
-  data(){
-    return{
-      info:''
-    }
-  }
+  // data(){
+  //   return{
+  //     info:''
+  //   }
+  // }
 };
 </script>
 
@@ -87,9 +87,5 @@ export default {
 }
 
 
-p{
-  color:white;
-  font-size:.8rem;
-  padding:.8rem;
-}
+
 </style>

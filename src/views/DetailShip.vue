@@ -16,7 +16,7 @@
         Excepturi necessitatibus officia i.
       </p>
     </div>
-    <div class="featuresShips">
+    <div class="featuresShips mb-5">
       <div>
         <p>Cost in credits:{{ itemShip.cost_in_credits }}</p>
         <p>Atmospheric Speed:{{ itemShip.max_atmosphering_speed }}</p>
@@ -36,33 +36,82 @@
         <p>url:{{ itemShip.url }}</p>
       </div>
     </div>
-    <!-- <button id="viewMore">View More</button> -->
+    <div v-show="flagsPilots" class="border border-3">
+      <h3>GRANDES PILOTOS DE ESTA NAVE </h3>
+      <div class="d-flex flex-wrap justify-content-around">
+       <Pilots  v-for="(itemPilot,index) in pilotsItemData"  :key="index" :piloto="itemPilot"/>
+      </div>
+    </div>
+
+
+    
   </div>
 </template>
 
 <script>
+import Pilots from "@/components/Pilots.vue";
+import { mapState,mapActions} from  'vuex'
 export default {
   name: "DetailShip",
   props: ["model"],
-  data() {
+  components:{
+    Pilots,
+  },
+  data() {  
     return {
       numItems: 10,
       mytitle: "",
       itemShip: {},
       result: "0",
       urlFinal: "",
+      pilotsItemsURL:[]
     };
   },
+  computed: {
+       ...mapState(['pilotsItemData','flagsPilots'])
+      //      ...mapState(['pilotsItemData']),
+      //      ...mapGetters(['getPilotData'])
+
+    },
   methods: {
+    ...mapActions(['GET_ALLITEMSPILOTS']) ,
+     
+     
+    goHome() {this.$router.push({path:'/'})},
+ 
     InfoDetailShip() {
+      if(!this.model){
+        console.log('El model es vacio');
+        this.goHome();
+   //     console.log(this.$store.state.itemShipModel);
+
+     }
+    //  else{
+    //    console.log("Guardamos el modelo");
+    //    this.$store.commit("SET_ITEM_SHIP_MODEL",this.model)
+    //  }
+
+     // console.log(this.$store.state.itemShipModel)
       this.itemShip = this.$store.state.info.find((e) => {
-        return e.model === this.model;
+         
+         return e.model === this.model;
       });
+
+      console.log('APA1.-' + this.itemShip['pilots'].length);
+
+         
 
       return (this.result =
         "https://starwars-visualguide.com/assets/img/starships/5.jpg");
     },
-  },
+    
+  }, //mounted beforeMount
+  mounted() {
+    console.log("Estamos montando");
+    console.log(this.$store.state);
+      this.$store.dispatch("GET_ALLITEMSPILOTS",this.itemShip['pilots'] );
+    //  this.scroll();
+    },
 };
 </script>
 <style scoped>
