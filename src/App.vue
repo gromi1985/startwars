@@ -32,11 +32,11 @@ export default {
   components: {
     NavBar
   },
-  data(){
-    return{
-      info:''
-    }
-  }
+  // data(){
+  //   return{
+  //     info:''
+  //   }
+  // }
 };
 </script>
 

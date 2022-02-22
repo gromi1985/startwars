@@ -27,3 +27,15 @@ Por lo que he cambiado los estilos al padre en comun que es el navbar.
 Cambio de ruta dentro de codigo, por path o por nombre
    this.$router.push({path: '/'});
       this.$router.push({name:'Home'});
+
+
+      //  "name": "Chewbacca", 
+//     "height": "228", 
+//     "mass": "112", 
+//     "hair_color": "brown", 
+//     "skin_color": "unknown", 
+//     "eye_color": "blue", 
+//     "birth_year": "200BBY", 
+//     "gender": "male", 
+
+ // .get(`https://swapi.dev/api/starships?page=${state.state.page}`)

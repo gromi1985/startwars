@@ -99,7 +99,7 @@
 
 <script>
 import InputElement from '@/components/InputElement.vue'
-import {mapGetters,mapActions} from  'vuex'
+import {mapActions} from  'vuex'
 
 
 export default {
@@ -188,37 +188,16 @@ export default {
      console.log('1');
      if(!this.flagError)
       {
-             console.log('2');
-
-        //Verifica que usuario no exista en localstorage
-        //  this.$store.commit( 'SETUSER',this.userRegister);
-       //  this.VERIFUSER(this.userRegister);
-          console.log(this.$store.state.flagUser);
-          //if(this.$store.state.flagUser){
-              //Enviando un objeto Funciona
-             // this.$store.commit( 'REGISTERUSER',this.userRegister);
-              this.REGISTERUSER(this.userRegister);
-              this.goLogin();
-        //  }
+          this.REGISTERUSER(this.userRegister);
+          this.goLogin();
       }
 
     }
-    // guardarLocalStorage: function () {
-    //   // event.preventDefault();
-    //   this.dataPerson.email = this.email;
-    //   this.dataPerson.password = this.password;
-    //   this.dataPerson.firstName = this.firstName;
-    //   this.dataPerson.firstName = this.lastName;
-    //   this.dataPerson.offers = this.offers;
-    //   this.dataPerson.displayName = false;
-
-    //   localStorage.setItem("usuario", JSON.stringify(this.dataPerson));
-    // },
     
   },
-  computed:{
-    ...mapGetters(['getUserExiste'])
-  }
+  // computed:{
+  //   ...mapGetters(['getUserExiste'])
+  // }
 };
 </script>
 <style>
