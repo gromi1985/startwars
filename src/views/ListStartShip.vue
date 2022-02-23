@@ -4,7 +4,7 @@
       <div v-for = "(item, index) in info" 
                       :key="index" 
                       class='regItems d-flex flex-column align-items-left ps-4' 
-                      @click="Detailship(item.model)">
+                      @click="Detailship(item.url) ">
         <p class="itemFirst py-2">{{item.name}}</p>
         <p class="itemSecond py-2">{{item.model}}</p>
       </div>
@@ -20,9 +20,13 @@ export default {
       ...mapState(['info']),
     },
   methods: {
-    ...mapActions(['GET_ITEMSHIP']),
-    Detailship(model){  
-      this.$router.push({ name: 'DetailShip', params:{model:model}});                                                 
+    ...mapActions(['GET_LISTSHIP']),
+    
+    Detailship(url){ 
+      console.log('Detailship:' + url); 
+      let patternRegex= '[^/]+/$';//Ultima parte de la url
+      this.$router.push('/detailship/'+ url.match(patternRegex)[0]);                                                 
+                                               
       },
  
     scroll(){
@@ -33,7 +37,7 @@ export default {
         let bottomOfWindow = sumaSizes > limitDown && sumaSizes < limitUp
         console.log(bottomOfWindow);
         if (bottomOfWindow ) {
-          this.$store.dispatch("GET_ITEMSHIP");
+          this.$store.dispatch("GET_LISTSHIP");
         }
        
       };
@@ -42,12 +46,12 @@ export default {
 
  
     /* beforeMount() {
-       this.$store.dispatch("GET_ITEMSHIP");
+       this.$store.dispatch("GET_LISTSHIP");
        window.addEventListener('scroll',this.scroll()); 
 
      },*/
    mounted() {
-      this.$store.dispatch("GET_ITEMSHIP");
+      this.$store.dispatch("GET_LISTSHIP");
       this.scroll();
     },
 

@@ -13,7 +13,8 @@ export default createStore({
     pilotsItemData:[],
     itemDetailsSelect:'',
     nItemPilots:0,
-    nCountPilots:0
+    nCountPilots:0,
+    itemShipOnly:{}
   },
   mutations: {
     //flagUser: true si el usuario existe en el localstorage
@@ -52,19 +53,22 @@ export default createStore({
     //   console.log( 'APA:' + state.itemShipModel)
     // },
  
-  SET_ITEMSHIPINFO:function(state,payload){
+  SET_LISTSHIPINFO:function(state,payload){
     for(let i in payload){
       state.info.push(payload[i]);
     }
     console.log('PEPINOOOO')
     console.log(state.info);
     },
+   SET_IEMSHIPINFO:function(state,payload){
+    state.itemShipOnly = Object.assign({} , payload)
+    },
     SET_FLAGPILOT:function(state,newValue){
       state.flagsPilots = newValue;
     }
   },
   actions: {
-    GET_ITEMSHIP: (state) =>
+    GET_LISTSHIP: (state) =>
     {
       axios
        .get(`https://swapi.py4e.com/api/starships?page=${state.state.page}`)
@@ -74,7 +78,7 @@ export default createStore({
             // state.info.push(response.data.results);
             //  console.log("Antes de la siguiente llamada");
             //  console.log(state.state.info);
-             state.commit("SET_ITEMSHIPINFO",response.data.results);
+             state.commit("SET_LISTSHIPINFO",response.data.results);
             //  console.log('Despues de la llamada');
             //  console.log(state.state.info);
 
@@ -83,6 +87,36 @@ export default createStore({
              
         }
         console.log ('TESOROOOO');
+        
+       })
+      .catch(error=>console.log(error));
+    },
+    GET_ITEMSHIP: (state,id) =>
+    {
+      console.log('Estamos LLamando a GET_ITEMSHIP');
+      axios
+      .get(`https://swapi.py4e.com/api/starships/${id}/`)
+
+      .then(response => {
+        if(response.status == 200){
+           //let shipListInfo = response.data.results;
+            // state.info.push(response.data.results);
+            //  console.log("Antes de la siguiente llamada");
+            //  console.log(state.state.info);
+             state.commit("SET_IEMSHIPINFO",response.data);
+             console.log('response.data.pilots.length:' + response.data.pilots.length);
+             if(response.data.pilots.length)
+               state.commit('SET_FLAGPILOT',true);
+             else
+              state.commit('SET_FLAGPILOT',false);
+       
+            //  console.log('Despues de la llamada');
+            //  console.log(state.state.info);
+
+            // state.state.page++;
+             
+        }
+        console.log ('TOO');
         
        })
       .catch(error=>console.log(error));
@@ -153,7 +187,7 @@ export default createStore({
       console.log(state);
       console.log('GET_ALLITEMSPILOTS...');
       console.log('A PA2: ' + pilotsUrlArray.length);
-      state.commit('SET_NITEMS_PILOTS',4);
+      state.commit('SET_NITEMS_PILOTS',pilotsUrlArray.length);
 
       console.log('state.nItemPilots:' + state.state.nItemPilots);
       console.log('2.- state.nCountPilots: ' +  state.state.nCountPilots);
@@ -207,6 +241,10 @@ export default createStore({
       console.log('LLamando al getPilotData.."');
       return state.pilotsItemData;
     },
+    getItemShipOnly:(state)=>{
+      console.log('LLamando a getItemShipOnly')
+      return state.itemShipOnly;
+    }
   //   getModel: (state) => {
   //     console.log('getModel');
   //     return state.itemShipModel;

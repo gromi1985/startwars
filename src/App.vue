@@ -9,7 +9,7 @@
       <router-link to="/video">VIDEO</router-link> 
     </div>
     <div class="border-x">
-      <router-link v-if='flagUser'  to="/starships">STARSHIPS</router-link>
+      <router-link v-if='flagUser'  to="/listStartShip">STARSHIPS</router-link>
        <router-link v-else to="/Login" >STARSHIPS</router-link>
     </div>
   </div>
